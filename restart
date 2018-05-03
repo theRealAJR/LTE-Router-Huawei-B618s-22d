@@ -1,0 +1,13 @@
+#!/bin/bash
+
+. "$(dirname "$0")"/base
+
+"$(dirname "$0")"/login || exit 1
+
+N=90
+
+get $URL_PREFIX/
+TOKEN=`grep csrf $DIR/$N_PRETTY.html |cut -d '"' -f 4|tail -n 1`
+echo '<?xml version="1.0" encoding="UTF-8"?><request><Control>1</Control></request>' >$DIR/restart.xml
+post --body-file=$DIR/restart.xml --header="__RequestVerificationToken:$TOKEN" $URL_PREFIX/api/device/control
+

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+
+. "$(dirname "$0")"/base
+
+"$(dirname "$0")"/login || exit 1
+
+N=50
+
+addValue()
+{
+  name=$1
+  cutLast=$2
+
+  value=`grep "<$name>" $DIR/*.html|cut -d '>' -f 2|cut -d '<' -f 1`
+
+  if [ -z "$value" ]
+  then
+    echo "value '$name' not found"
+    return
+  fi
+
+  if [ -n "$cutLast" ]
+  then
+    len=${#value}
+    let len-=$cutLast
+    value=${value:0:$len}
+  fi
+
+  echo "$name=$value" >>$FILE
+}
+
+get $URL_PREFIX/api/monitoring/traffic-statistics
+get $URL_PREFIX/api/device/signal
+
+"$(dirname "$0")"/logout
+
+FILE=$DIR/dynamicValues
+
+echo -n >$FILE
+
+addValue TotalUpload
+addValue TotalDownload
+addValue CurrentConnectTime
+addValue CurrentDownloadRate
+addValue CurrentUploadRate
+
+addValue rsrq 2
+addValue rsrp 3
+addValue rssi 3
+addValue sinr 2
+addValue band
+addValue cell_id
+

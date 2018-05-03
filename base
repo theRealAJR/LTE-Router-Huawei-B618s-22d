@@ -1,0 +1,29 @@
+#!/bin/bash
+
+DIR=/tmp/lte/huawei
+HOST=192.168.8.1
+
+COOKIES_FILE=$DIR/cookies
+URL_PREFIX=http://$HOST
+
+get()
+{
+  let N++
+  N_PRETTY=`printf %04d $N`
+  wget -d --keep-session-cookies --load-cookies $COOKIES_FILE --save-cookies $COOKIES_FILE -S -O $DIR/$N_PRETTY.html -o $DIR/$N_PRETTY.out $* 2>$DIR/$N_PRETTY.out || exit 1
+}
+
+post()
+{
+  get --method=POST $*
+}
+
+hash()
+{
+  echo -n "$1" >$DIR/hash.src
+  sha256sum $DIR/hash.src |cut -d ' ' -f 1|tr -d '\n' >$DIR/hash.sha256
+  base64 -w 0 $DIR/hash.sha256 >$DIR/hash.b64
+}
+
+mkdir -p $DIR
+

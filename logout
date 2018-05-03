@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. "$(dirname "$0")"/base
+
+N=100
+
+get $URL_PREFIX/
+TOKEN=`grep csrf $DIR/$N_PRETTY.html |cut -d '"' -f 4|tail -n 1`
+echo '<?xml version "1.0" encoding="UTF-8"?><request><Logout>1</Logout></request>' >$DIR/logout.xml
+post --body-file=$DIR/logout.xml --header="__RequestVerificationToken:$TOKEN" $URL_PREFIX/api/user/logout
+

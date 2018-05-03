@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. "$(dirname "$0")"/base
+
+"$(dirname "$0")"/login || exit 1
+
+N=10
+
+get $URL_PREFIX/api/device/information
+get $URL_PREFIX/api/monitoring/status
+get $URL_PREFIX/api/net/current-plmn
+get $URL_PREFIX/api/net/net-mode
+
+"$(dirname "$0")"/logout
+
