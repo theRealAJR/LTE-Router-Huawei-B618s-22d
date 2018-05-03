@@ -48,7 +48,8 @@ causes the router to perform a reset
 ## Setup
 * set the IP address or name of the router in property `HOST` of file `base`
 * set the directory, in which the files shall be stored in property `DIR` of file `base`
-***use a dedicated directory for this, because its contenst will be deleted!***
+
+***use a dedicated directory for this, because its contents will be deleted!***
 * set the name of the user, which shall be used to log into the router in property `USER` of file `login`
 * set the password, which shall be used to log into the router in property `PASS` of file `login`
 ### Requirements
