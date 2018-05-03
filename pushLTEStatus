@@ -1,0 +1,29 @@
+#!/bin/bash
+
+FILE=/var/spool/prometheus/lteStatus.prom
+
+"/opt/LTE Router Huawei B618s-22d/getDynamicInfo"
+. /tmp/lte/huawei/dynamicValues
+
+echo "# TYPE lte_rate gauge" >$FILE$$
+echo "# TYPE lte_signal gauge" >>$FILE$$
+echo "# TYPE lte_connection gauge" >>$FILE$$
+echo "# TYPE lte_bytes counter" >>$FILE$$
+
+echo "lte_signal{type=\"rsrq\"} $rsrq" >>$FILE$$
+echo "lte_signal{type=\"rsrp\"} $rsrp" >>$FILE$$
+echo "lte_signal{type=\"rssi\"} $rssi" >>$FILE$$
+echo "lte_signal{type=\"sinr\"} $sinr" >>$FILE$$
+
+echo "lte_rate{type=\"download\"} $CurrentDownloadRate" >>$FILE$$
+echo "lte_rate{type=\"upload\"} $CurrentUploadRate" >>$FILE$$
+
+echo "lte_bytes{type=\"upload\"} $TotalUpload" >>$FILE$$
+echo "lte_bytes{type=\"download\"} $TotalDownload" >>$FILE$$
+
+echo "lte_connection{type=\"band\"} $band" >>$FILE$$
+echo "lte_connection{type=\"cellid\"} $cell_id" >>$FILE$$
+echo "lte_connection{type=\"duration\"} $CurrentConnectTime" >>$FILE$$
+
+mv $FILE$$ $FILE
+
