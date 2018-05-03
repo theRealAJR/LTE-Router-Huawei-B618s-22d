@@ -57,3 +57,5 @@ like most bash scripts, some tools are needed for these scripts:
 * wget
 * base64
 * sha256sum
+## Monitoring
+script `pushLTEStatus`can be used to push the values to [Prometheus](https://prometheus.io/). It creates a `.prom` file which can be read by [node_exporter](https://prometheus.io/download/#node_exporter). node exported has to be started with the textfile collector enabled (e.g. `-collectors.enabled textfile -collector.textfile.directory /var/spool/prometheus`)
